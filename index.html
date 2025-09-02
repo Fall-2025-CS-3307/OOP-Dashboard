@@ -4,76 +4,124 @@
   <meta charset="UTF-8">
   <title>OOP Course Portal – Fall 2025</title>
   <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
-      background: #f4f4f4;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
       color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    h1 {
-      margin-bottom: 40px;
-      font-size: 2.5em;
-      color: #222;
+
+    header {
+      background: linear-gradient(90deg, #007bff, #0056b3);
+      width: 100%;
+      padding: 25px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
+
+    header h1 {
+      font-size: 2.2em;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 40px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
     .card {
       background: #fff;
+      border-radius: 14px;
       padding: 25px;
-      margin: 20px auto;
-      width: 70%;
-      max-width: 700px;
-      border-radius: 12px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
-    h2 {
-      margin-bottom: 10px;
-      color: #444;
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.15);
     }
-    p {
-      font-size: 1.1em;
-      margin-bottom: 15px;
+
+    .card h2 {
+      font-size: 1.5em;
+      margin-bottom: 12px;
+      color: #0056b3;
     }
+
+    .card p {
+      font-size: 1.05em;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
     a.button {
       display: inline-block;
-      padding: 12px 25px;
-      margin-top: 10px;
-      background-color: #007bff;
-      color: white;
+      padding: 12px 28px;
+      background: #007bff;
+      color: #fff;
       text-decoration: none;
-      font-size: 1em;
-      border-radius: 6px;
-      transition: background-color 0.2s ease;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background 0.2s ease;
     }
+
     a.button:hover {
-      background-color: #0056b3;
+      background: #0056b3;
     }
+
     footer {
-      margin-top: 50px;
-      font-size: 0.9em;
-      color: #555;
+      margin-top: auto;
+      background: #fff;
+      width: 100%;
+      padding: 15px;
+      text-align: center;
+      font-size: 0.95em;
+      color: #666;
+      border-top: 1px solid #ddd;
     }
   </style>
 </head>
 <body>
-  <h1>OOP Course Portal – Fall 2025</h1>
+  <header>
+    <h1>OOP Course Portal – Fall 2025</h1>
+  </header>
 
-  <div class="card">
-    <h2>Assignment 1: Proposal</h2>
-    <p>Submit your written proposal in the <code>/report</code> folder. Follow the required structure.</p>
-    <a class="button" href="https://classroom.github.com/a/CGJqB8xo" target="_blank">Submit Assignment 1</a>
-  </div>
+  <section class="dashboard">
+    <div class="card">
+      <h2>Assignment 1: Proposal</h2>
+      <p>Submit your written proposal in the <code>/report</code> folder. Follow the required structure.</p>
+      <a class="button" href="https://classroom.github.com/a/CGJqB8xo" target="_blank">Submit Assignment 1</a>
+    </div>
 
-  <div class="card">
-    <h2>Assignment 2: Low-Fidelity Prototype</h2>
-    <p>Submit your wireframes in the <code>/code</code> folder and your report in the <code>/report</code> folder.</p>
-    <a class="button" href="https://classroom.github.com/a/5PRgGAth" target="_blank">Submit Assignment 2</a>
-  </div>
+    <div class="card">
+      <h2>Assignment 2: Low-Fidelity Prototype</h2>
+      <p>Submit your wireframes in the <code>/code</code> folder and your report in the <code>/report</code> folder.</p>
+      <a class="button" href="https://classroom.github.com/a/5PRgGAth" target="_blank">Submit Assignment 2</a>
+    </div>
 
-  <div class="card">
-    <h2>Assignment 3: High-Fidelity Prototype</h2>
-    <p>Submit your complete C++ project in the <code>/code</code> folder and your report & UML diagrams in the <code>/report</code> folder.</p>
-    <a class="button" href="https://classroom.github.com/a/A3Pdeccs" target="_blank">Submit Assignment 3</a>
-  </div>
+    <div class="card">
+      <h2>Assignment 3: High-Fidelity Prototype</h2>
+      <p>Submit your complete C++ project in the <code>/code</code> folder and your report & UML diagrams in the <code>/report</code> folder.</p>
+      <a class="button" href="https://classroom.github.com/a/A3Pdeccs" target="_blank">Submit Assignment 3</a>
+    </div>
+  </section>
 
   <footer>
     © Fall 2025 – CS3307 OOP Course | GitHub Classroom Portal

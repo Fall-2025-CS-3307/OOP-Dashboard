@@ -1,130 +1,460 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>OOP Course Portal – Fall 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* -------------------- THEME -------------------- */
+    :root{
+      --bg: #0f172a;           /* slate-900 */
+      --bg-2:#111827;          /* gray-900 */
+      --surface:#0b1220;       /* deep slate */
+      --card:#0f1b32;          /* card bg (dark) */
+      --card-light:#ffffff;    /* card bg (light) */
+      --text:#e5e7eb;          /* text on dark */
+      --muted:#9ca3af;         /* muted text */
+      --ring: rgba(99,102,241,.35);
+      --primary:#6366f1;       /* indigo-500 */
+      --primary-600:#4f46e5;   /* indigo-600 */
+      --accent:#22d3ee;        /* cyan-400 */
+      --success:#10b981;       /* emerald-500 */
+      --warning:#f59e0b;       /* amber-500 */
+      --danger:#ef4444;        /* red-500 */
+      --shadow: 0 8px 30px rgba(0,0,0,.35);
+      --radius: 16px;
     }
 
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
-      color: #333;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    /* Light mode (optional): set data-theme="light" on <html> to switch */
+    html[data-theme="light"]{
+      --bg:#f6f7fb;
+      --bg-2:#eef1f6;
+      --surface:#f6f7fb;
+      --card:#ffffff;
+      --card-light:#ffffff;
+      --text:#0b1020;
+      --muted:#5b6472;
+      --ring: rgba(79,70,229,.18);
+      --shadow: 0 10px 25px rgba(2,6,23,.08);
     }
 
-    header {
-      background: linear-gradient(90deg, #007bff, #0056b3);
-      width: 100%;
-      padding: 25px;
-      text-align: center;
-      color: white;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    /* -------------------- BASE -------------------- */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 800px at 10% -10%, rgba(79,70,229,.20), transparent 60%),
+        radial-gradient(1000px 700px at 110% 10%, rgba(34,211,238,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--surface));
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a{ color: inherit; text-decoration: none; }
+
+    /* -------------------- HEADER / NAV -------------------- */
+    .topbar{
+      position: sticky; top:0; z-index: 50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(16,23,42,.75), rgba(16,23,42,.35));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav-wrap{
+      max-width: 1100px; margin:0 auto; padding: 14px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.2px;
+    }
+    .brand .dot{
+      width:12px; height:12px; border-radius:50%;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      box-shadow: 0 0 0 4px rgba(34,211,238,.15), 0 6px 18px rgba(79,70,229,.35);
+    }
+    .nav{
+      display:flex; align-items:center; gap:18px; font-size:.95rem; color: var(--muted);
+    }
+    .nav a:hover{ color: var(--text); }
+    .toggle{
+      border:1px solid rgba(255,255,255,.12);
+      padding:8px 12px; border-radius:10px; font-size:.9rem; cursor:pointer;
+      background: rgba(255,255,255,.04);
+    }
+    .toggle:hover{ border-color: rgba(255,255,255,.24); }
+
+    /* -------------------- HERO -------------------- */
+    .hero{
+      max-width:1100px; margin: 28px auto 0; padding: 28px 20px 0;
+    }
+    .callout{
+      display:flex; align-items:center; gap:10px;
+      width:max-content; padding:8px 12px; border-radius:999px;
+      font-size:.85rem; color: var(--muted);
+      background: rgba(99,102,241,.12);
+      border:1px solid rgba(99,102,241,.22);
+    }
+    .hero-grid{
+      margin-top:18px;
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:24px;
+    }
+    @media (max-width: 900px){
+      .hero-grid{ grid-template-columns: 1fr; }
     }
 
-    header h1 {
-      font-size: 2.2em;
-      font-weight: bold;
-      letter-spacing: 1px;
+    .hero-card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .hero h1{
+      font-size: clamp(1.8rem, 2.4vw + 1rem, 2.6rem);
+      line-height:1.15; margin: 6px 0 10px;
+    }
+    .hero p{ color: var(--muted); font-size:1.05rem; }
+    .hero-quote{
+      margin-top:16px; font-style: italic; color: #cdd5ff;
+      border-left: 3px solid var(--primary); padding-left:12px;
+    }
+    .hero-stats{
+      display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-top:18px;
+    }
+    .stat{
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px; padding:12px 14px;
+    }
+    .stat .k{ font-weight:700; color: var(--accent); font-size:1.1rem; }
+    .stat .t{ color: var(--muted); font-size:.9rem; }
+
+    .steps{
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .step{
+      display:flex; gap:12px; align-items:flex-start;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px; padding:12px 14px;
+    }
+    .step .badge{
+      width:28px; height:28px; border-radius:8px; flex: none;
+      display:grid; place-items:center; color:#0b1220; font-weight:700;
+      background: linear-gradient(135deg, var(--accent), var(--primary));
+      box-shadow: 0 6px 14px rgba(79,70,229,.35);
+    }
+    .step .meta{ font-size:.92rem; color: var(--muted); margin-top:2px; }
+
+    /* -------------------- ASSIGNMENTS -------------------- */
+    .section{
+      max-width:1100px; margin: 28px auto; padding: 0 20px;
+    }
+    .section h2{
+      font-size:1.35rem; letter-spacing:.3px; color:#cbd5e1; margin-bottom:8px;
+    }
+    .sub{ color: var(--muted); margin-bottom:18px; }
+
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 1000px){
+      .grid{ grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 680px){
+      .grid{ grid-template-columns: 1fr; }
     }
 
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      padding: 40px;
-      width: 100%;
-      max-width: 1100px;
+    .card{
+      position:relative;
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.09);
+      border-radius: 18px;
+      padding: 20px 18px;
+      box-shadow: var(--shadow);
+      transition: transform .22s ease, border-color .22s ease;
+      overflow:hidden;
     }
-
-    .card {
-      background: #fff;
-      border-radius: 14px;
-      padding: 25px;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    .card::after{
+      content:"";
+      position:absolute; inset:auto -40px -40px auto; width:160px; height:160px;
+      background: radial-gradient(120px 120px at 50% 50%, rgba(34,211,238,.18), transparent);
+      transform: rotate(35deg);
+      pointer-events:none;
     }
+    .card:hover{ transform: translateY(-4px); border-color: rgba(99,102,241,.35); }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+    .card-head{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px;
     }
-
-    .card h2 {
-      font-size: 1.5em;
-      margin-bottom: 12px;
-      color: #0056b3;
+    .chip{
+      font-size:.8rem; color:#0b1220; background: linear-gradient(135deg, #a5b4fc, #67e8f9);
+      padding:6px 10px; border-radius:999px; font-weight:600;
+      box-shadow: 0 6px 18px rgba(99,102,241,.3);
     }
-
-    .card p {
-      font-size: 1.05em;
-      margin-bottom: 20px;
-      color: #555;
+    .title{
+      display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px;
     }
-
-    a.button {
-      display: inline-block;
-      padding: 12px 28px;
-      background: #007bff;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: background 0.2s ease;
+    .title svg{ opacity:.95; }
+    .desc{ color: var(--muted); font-size:.98rem; margin:8px 0 14px; }
+    .meta-row{
+      display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;
     }
-
-    a.button:hover {
-      background: #0056b3;
+    .tag{
+      font-size:.8rem; color:#cbd5e1; border:1px dashed rgba(255,255,255,.16);
+      padding:6px 8px; border-radius:8px;
     }
+    .cta{
+      display:inline-flex; align-items:center; gap:8px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-600));
+      color:white; font-weight:600; letter-spacing:.2px;
+      padding:12px 16px; border-radius:12px; border:none; cursor:pointer;
+      box-shadow: 0 10px 20px rgba(79,70,229,.35);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .cta:hover{ transform: translateY(-2px); box-shadow: 0 14px 26px rgba(79,70,229,.42); }
 
-    footer {
-      margin-top: auto;
-      background: #fff;
-      width: 100%;
-      padding: 15px;
-      text-align: center;
-      font-size: 0.95em;
-      color: #666;
-      border-top: 1px solid #ddd;
+    /* -------------------- RESOURCES -------------------- */
+    .resources{
+      display:grid; grid-template-columns: 1.4fr .6fr; gap:18px;
+    }
+    @media (max-width: 900px){
+      .resources{ grid-template-columns: 1fr; }
+    }
+    .info{
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.09);
+      border-radius: var(--radius);
+      padding:18px;
+      box-shadow: var(--shadow);
+    }
+    .info h3{ margin:4px 0 8px; }
+    .list{ margin: 6px 0 0 0; padding-left: 20px; color: var(--muted); }
+    .list li{ margin: 8px 0; }
+
+    /* -------------------- FOOTER -------------------- */
+    footer{
+      margin: 24px auto 40px; max-width:1100px; padding: 0 20px;
+      color: var(--muted); font-size:.95rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 18px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>OOP Course Portal – Fall 2025</h1>
+  <!-- Top Navigation -->
+  <div class="topbar" role="navigation" aria-label="Primary">
+    <div class="nav-wrap">
+      <div class="brand" aria-label="Course brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>CS3307 • Object-Oriented Programming</span>
+      </div>
+      <nav class="nav" aria-label="Sections">
+        <a href="#assignments">Assignments</a>
+        <a href="#how">How it works</a>
+        <a href="#resources">Resources</a>
+        <button class="toggle" id="themeToggle" aria-label="Toggle theme">Toggle theme</button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="callout" aria-label="Term">
+      <strong>Fall 2025</strong> · OOP Course Portal
+    </div>
+
+    <div class="hero-grid">
+      <div class="hero-card">
+        <h1>Welcome to the Assignment Submission Portal</h1>
+        <p>
+          Submit your work with confidence. Each assignment page clearly states what to include,
+          where to place files (<code>/code</code> &amp; <code>/report</code>), and links straight to GitHub Classroom.
+        </p>
+        <p class="hero-quote">“Great software is crafted with clarity, compassion, and consistency.”</p>
+
+        <div class="hero-stats" aria-label="Quick stats">
+          <div class="stat"><div class="k">3</div><div class="t">Assignments</div></div>
+          <div class="stat"><div class="k">/code · /report</div><div class="t">Folder structure</div></div>
+          <div class="stat"><div class="k">GitHub Classroom</div><div class="t">Submission platform</div></div>
+        </div>
+      </div>
+
+      <div class="hero-card steps" id="how">
+        <div class="step">
+          <div class="badge">1</div>
+          <div>
+            <strong>Open the assignment</strong>
+            <div class="meta">Use the “Submit” button to accept the Classroom invitation.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">2</div>
+          <div>
+            <strong>Follow structure</strong>
+            <div class="meta">Place code in <code>/code</code> and written report/diagrams in <code>/report</code>.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">3</div>
+          <div>
+            <strong>Commit & push</strong>
+            <div class="meta">Commit often. Your last push before the deadline is graded.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">4</div>
+          <div>
+            <strong>Verify</strong>
+            <div class="meta">Ensure build/run instructions are in <code>/report/README.md</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <section class="dashboard">
-    <div class="card">
-      <h2>Assignment 1: Proposal</h2>
-      <p>Submit your written proposal in the <code>/report</code> folder. Follow the required structure.</p>
-      <a class="button" href="https://classroom.github.com/a/CGJqB8xo" target="_blank">Submit Assignment 1</a>
-    </div>
+  <!-- Assignments -->
+  <section class="section" id="assignments" aria-labelledby="assignments-title">
+    <h2 id="assignments-title">Assignments</h2>
+    <p class="sub">Clear expectations. Consistent structure. One click to submit.</p>
 
-    <div class="card">
-      <h2>Assignment 2: Low-Fidelity Prototype</h2>
-      <p>Submit your wireframes in the <code>/code</code> folder and your report in the <code>/report</code> folder.</p>
-      <a class="button" href="https://classroom.github.com/a/5PRgGAth" target="_blank">Submit Assignment 2</a>
-    </div>
+    <div class="grid">
+      <!-- A1 -->
+      <article class="card" aria-labelledby="a1-title">
+        <div class="card-head">
+          <div class="title" id="a1-title">
+            <!-- doc icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 3h6l4 4v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" stroke="#a5b4fc" stroke-width="1.4"/>
+              <path d="M13 3v4h4" stroke="#67e8f9" stroke-width="1.4"/>
+            </svg>
+            Assignment 1: Proposal
+          </div>
+          <span class="chip">Writing</span>
+        </div>
+        <p class="desc">
+          Submit your written proposal in <code>/report</code>.
+          Follow the required structure and include a brief problem statement, objectives, and timeline.
+        </p>
+        <div class="meta-row">
+          <span class="tag">Weight: as announced</span>
+          <span class="tag">Due: set by instructor</span>
+          <span class="tag">Format: PDF/Markdown</span>
+        </div>
+        <a class="cta" href="https://classroom.github.com/a/CGJqB8xo" target="_blank" rel="noopener">
+          <!-- arrow icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Submit Assignment 1
+        </a>
+      </article>
 
-    <div class="card">
-      <h2>Assignment 3: High-Fidelity Prototype</h2>
-      <p>Submit your complete C++ project in the <code>/code</code> folder and your report & UML diagrams in the <code>/report</code> folder.</p>
-      <a class="button" href="https://classroom.github.com/a/A3Pdeccs" target="_blank">Submit Assignment 3</a>
+      <!-- A2 -->
+      <article class="card" aria-labelledby="a2-title">
+        <div class="card-head">
+          <div class="title" id="a2-title">
+            <!-- wireframe icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="3" stroke="#a5b4fc" stroke-width="1.4"/>
+              <path d="M3 9h18M8 9v11" stroke="#67e8f9" stroke-width="1.4"/>
+            </svg>
+            Assignment 2: Low-Fidelity Prototype
+          </div>
+          <span class="chip">Design</span>
+        </div>
+        <p class="desc">
+          Submit wireframes in <code>/code</code> and the report in <code>/report</code>.
+          Describe task flows, key screens, and rationale for design decisions.
+        </p>
+        <div class="meta-row">
+          <span class="tag">Weight: as announced</span>
+          <span class="tag">Due: set by instructor</span>
+          <span class="tag">Format: PNG/PDF + Report</span>
+        </div>
+        <a class="cta" href="https://classroom.github.com/a/5PRgGAth" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Submit Assignment 2
+        </a>
+      </article>
+
+      <!-- A3 -->
+      <article class="card" aria-labelledby="a3-title">
+        <div class="card-head">
+          <div class="title" id="a3-title">
+            <!-- code icon -->
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8 16l-4-4 4-4M16 8l4 4-4 4" stroke="#a5b4fc" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 4l-4 16" stroke="#67e8f9" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            Assignment 3: High-Fidelity Prototype
+          </div>
+          <span class="chip">C++ Build</span>
+        </div>
+        <p class="desc">
+          Submit your complete C++ project in <code>/code</code>, and your report &amp; UML diagrams in <code>/report</code>.
+          Include build/run instructions and any external dependencies.
+        </p>
+        <div class="meta-row">
+          <span class="tag">Weight: as announced</span>
+          <span class="tag">Due: set by instructor</span>
+          <span class="tag">Format: Source + PDF</span>
+        </div>
+        <a class="cta" href="https://classroom.github.com/a/A3Pdeccs" target="_blank" rel="noopener">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Submit Assignment 3
+        </a>
+      </article>
     </div>
   </section>
 
-  <footer>
-    © Fall 2025 – CS3307 OOP Course | GitHub Classroom Portal
+  <!-- Resources & Notes -->
+  <section class="section" id="resources" aria-labelledby="resources-title">
+    <h2 id="resources-title">Resources & Notes</h2>
+    <p class="sub">Everything you need for smooth submissions.</p>
+
+    <div class="resources">
+      <div class="info" aria-label="Submission tips">
+        <h3>Submission Checklist</h3>
+        <ul class="list">
+          <li>✅ README with build/run steps inside <code>/report/README.md</code></li>
+          <li>✅ Respect required folder structure: <code>/code</code> & <code>/report</code></li>
+          <li>✅ Commit early, commit often; push before the deadline</li>
+          <li>✅ Diagrams (UML for A3) exported to PDF inside <code>/report</code></li>
+          <li>✅ Do not include large binaries unless explicitly requested</li>
+        </ul>
+      </div>
+      <div class="info" aria-label="Support">
+        <h3>Need help?</h3>
+        <ul class="list">
+          <li>📧 Contact: course staff via LMS discussion or email</li>
+          <li>🛠️ Office Hours: see course schedule</li>
+          <li>📂 Repository access: ensure you accepted the Classroom invite</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer aria-label="Footer">
+    © Fall 2025 — CS3307 OOP Course • GitHub Classroom Portal
   </footer>
+
+  <script>
+    // Simple theme toggle (dark by default). Click "Toggle theme" to switch.
+    const btn = document.getElementById('themeToggle');
+    btn.addEventListener('click', () => {
+      const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      document.documentElement.setAttribute('data-theme', isLight ? 'dark' : 'light');
+      btn.textContent = isLight ? 'Toggle theme' : 'Toggle theme';
+    });
+  </script>
 </body>
 </html>
